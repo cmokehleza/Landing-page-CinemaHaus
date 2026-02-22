@@ -1,0 +1,2730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaHaus — Global Streaming Index</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ══════════════════════════════════════════════════
+   RESET & DESIGN TOKENS
+══════════════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%
+        }
+
+        :root {
+            --red: #FF0000;
+            --red-dark: #CC0000;
+            --red-dim: rgba(255, 0, 0, 0.15);
+            --red-line: rgba(255, 0, 0, 0.28);
+
+            --bg: #0F0F0F;
+            --bg2: #161616;
+            --bg3: #1E1E1E;
+            --bg4: #252525;
+            --bg5: #2C2C2C;
+
+            --border: rgba(255, 255, 255, 0.07);
+            --border2: rgba(255, 255, 255, 0.12);
+
+            --t1: #FFFFFF;
+            --t2: #B0B0B0;
+            --t3: #6A6A6A;
+            --t4: #404040;
+
+            --px: clamp(16px, 5vw, 72px);
+            --sy: clamp(52px, 7vw, 96px);
+
+            --font-display: "Google Sans", sans-serif;
+            --font-body: "Google Sans", sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--t1);
+            font-family: var(--font-body);
+            font-weight: 400;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit
+        }
+
+        ::-webkit-scrollbar {
+            width: 3px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--red)
+        }
+
+        /* ══════════════════════════════════════════════════
+   ATOMS
+══════════════════════════════════════════════════ */
+        .eyebrow {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            display: block;
+            width: 3px;
+            height: 16px;
+            background: var(--red);
+            border-radius: 1px;
+            flex-shrink: 0;
+        }
+
+        .display-heading {
+            font-family: var(--font-display);
+            font-size: clamp(24px, 3.5vw, 44px);
+            font-weight: 900;
+            line-height: 1.06;
+            letter-spacing: -.025em;
+            color: var(--t1);
+        }
+
+        .sec-hd {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 32px;
+        }
+
+        .link-arrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--red);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap .18s;
+            white-space: nowrap;
+        }
+
+        .link-arrow::after {
+            content: '→';
+            font-size: 14px;
+            font-weight: 400
+        }
+
+        .link-arrow:hover {
+            gap: 11px
+        }
+
+        .pill {
+            display: inline-block;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: 4px 11px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, .09);
+            color: var(--t2);
+            border: 1px solid var(--border2);
+        }
+
+        .pill-red {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red)
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 2px;
+            font: 700 12px/1 var(--font-body);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            transition: background .2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--red-dark)
+        }
+
+        .btn-primary svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .18);
+            padding: 13px 24px;
+            border-radius: 2px;
+            font: 600 12px/1 var(--font-body);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            transition: all .2s;
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, .18);
+            border-color: rgba(255, 255, 255, .35)
+        }
+
+        /* ══════════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════════ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 400;
+            height: 64px;
+            background: rgba(15, 15, 15, 0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--px);
+            gap: 0;
+            transition: background .3s;
+        }
+
+        .nav.solid {
+            background: #0F0F0F;
+            border-bottom-color: rgba(255, 0, 0, .2)
+        }
+
+        /* Logo */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+            margin-right: auto;
+        }
+
+        .nav-logo-bar {
+            width: 4px;
+            height: 28px;
+            background: var(--red);
+            border-radius: 1px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo-text {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--t1);
+            letter-spacing: -.03em;
+            line-height: 1;
+        }
+
+        .nav-logo-text em {
+            font-style: normal;
+            color: var(--red)
+        }
+
+        .nav-logo-tagline {
+            font-size: 7.5px;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--t3);
+            margin-top: 2px;
+        }
+
+        /* Desktop links */
+        .nav-links {
+            display: none;
+            list-style: none;
+            align-items: stretch;
+            height: 64px;
+            margin: 0 24px;
+            gap: 0;
+        }
+
+        .nav-links>li {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .nav-links>li>a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0 15px;
+            height: 100%;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            color: rgba(255, 255, 255, .58);
+            border-bottom: 2px solid transparent;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+
+        .nav-links>li>a svg {
+            width: 10px;
+            height: 10px;
+            opacity: .5;
+            transition: transform .2s
+        }
+
+        .nav-links>li:hover>a svg {
+            transform: rotate(180deg);
+            opacity: 1
+        }
+
+        .nav-links>li>a:hover,
+        .nav-links>li>a.active {
+            color: #fff;
+            border-bottom-color: var(--red)
+        }
+
+        /* Mega-menu */
+        .mega {
+            position: absolute;
+            top: 64px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 680px;
+            background: #111111;
+            border: 1px solid var(--border);
+            border-top: 2px solid var(--red);
+            box-shadow: 0 32px 64px rgba(0, 0, 0, .8);
+            display: none;
+            z-index: 500;
+        }
+
+        .nav-links>li:hover .mega {
+            display: block
+        }
+
+        .mega-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0;
+        }
+
+        /* Featured image column */
+        .mega-feature {
+            grid-column: 1/2;
+            position: relative;
+            min-height: 240px;
+            overflow: hidden;
+        }
+
+        .mega-feature-img {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform .4s ease;
+        }
+
+        .mega-feature:hover .mega-feature-img {
+            transform: scale(1.05)
+        }
+
+        .mega-feature-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, .92) 0%, rgba(0, 0, 0, .3) 60%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 18px;
+        }
+
+        .mega-feature-tag {
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 5px;
+        }
+
+        .mega-feature-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .mega-feature-sub {
+            font-size: 10px;
+            color: rgba(255, 255, 255, .5);
+            font-weight: 500
+        }
+
+        /* Link columns */
+        .mega-col {
+            padding: 24px 20px;
+            border-left: 1px solid var(--border);
+        }
+
+        .mega-col-title {
+            font-size: 8.5px;
+            font-weight: 800;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--red);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mega-links {
+            list-style: none
+        }
+
+        .mega-links li {
+            margin-bottom: 0
+        }
+
+        .mega-links a {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 7px 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, .52);
+            border-bottom: 1px solid transparent;
+            transition: all .18s;
+        }
+
+        .mega-links a:hover {
+            color: #fff;
+            padding-left: 6px
+        }
+
+        .mega-links a .ml-meta {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            color: var(--t3);
+            margin-left: auto;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        /* Mega with picture grid for platforms */
+        .mega-wide {
+            width: 800px;
+            left: 50%;
+            transform: translateX(-55%);
+        }
+
+        .mega-platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .mega-plat-cell {
+            background: #111;
+            padding: 20px 14px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: background .2s;
+            cursor: pointer;
+        }
+
+        .mega-plat-cell:hover {
+            background: #1a1a1a
+        }
+
+        .mega-plat-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-size: cover;
+            background-position: center;
+            border-radius: 1px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .mega-plat-thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, .3);
+            transition: background .2s;
+        }
+
+        .mega-plat-cell:hover .mega-plat-thumb::after {
+            background: rgba(0, 0, 0, .1)
+        }
+
+        .mega-plat-name {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--t1);
+            margin-bottom: 3px;
+            letter-spacing: -.02em;
+        }
+
+        .mega-plat-count {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--t3);
+        }
+
+        /* Bottom bar inside mega */
+        .mega-footer {
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0D0D0D;
+        }
+
+        .mega-footer-text {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--t3)
+        }
+
+        .mega-footer a {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--red);
+            transition: opacity .2s;
+        }
+
+        .mega-footer a:hover {
+            opacity: .7
+        }
+
+        /* Nav right */
+        .nav-right {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .nav-search-wrap {
+            position: relative
+        }
+
+        .nav-search-wrap svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            color: var(--t3);
+            pointer-events: none;
+        }
+
+        .nav-search {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            padding: 8px 12px 8px 34px;
+            font: 400 12px/1 var(--font-body);
+            color: var(--t1);
+            outline: none;
+            width: 180px;
+            transition: all .2s;
+        }
+
+        .nav-search:focus {
+            border-color: var(--red);
+            width: 220px;
+            background: var(--bg4)
+        }
+
+        .nav-search::placeholder {
+            color: var(--t3)
+        }
+
+        .nav-btn-in {
+            background: transparent;
+            border: 1px solid var(--border2);
+            color: var(--t1);
+            padding: 8px 18px;
+            border-radius: 2px;
+            font: 600 11px/1 var(--font-body);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            transition: all .2s;
+        }
+
+        .nav-btn-in:hover {
+            border-color: var(--red);
+            color: var(--red)
+        }
+
+        .nav-btn-watch {
+            background: var(--red);
+            border: none;
+            color: #fff;
+            padding: 9px 20px;
+            border-radius: 2px;
+            font: 700 11px/1 var(--font-body);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            transition: background .2s;
+        }
+
+        .nav-btn-watch:hover {
+            background: var(--red-dark)
+        }
+
+        @media(min-width:900px) {
+            .nav-links {
+                display: flex
+            }
+
+            .nav-right {
+                display: flex
+            }
+
+            .nav-logo {
+                margin-right: 0
+            }
+        }
+
+        /* Hamburger fixed top-right */
+        .ham {
+            position: fixed;
+            top: 12px;
+            right: 16px;
+            z-index: 600;
+            width: 40px;
+            height: 40px;
+            background: rgba(15, 15, 15, .92);
+            border: 1px solid var(--border2);
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            backdrop-filter: blur(10px);
+            transition: border-color .2s;
+        }
+
+        .ham:hover {
+            border-color: rgba(255, 255, 255, .3)
+        }
+
+        .ham span {
+            display: block;
+            width: 18px;
+            height: 1.5px;
+            background: var(--t2);
+            border-radius: 1px;
+            transition: all .28s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .ham.open {
+            border-color: var(--red)
+        }
+
+        .ham.open span:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+            background: var(--red)
+        }
+
+        .ham.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0)
+        }
+
+        .ham.open span:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+            background: var(--red)
+        }
+
+        @media(min-width:900px) {
+            .ham {
+                display: none
+            }
+        }
+
+        /* Mobile drawer */
+        .mob-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .75);
+            z-index: 550;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+        }
+
+        .mob-overlay.open {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .mob-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: min(320px, 88vw);
+            z-index: 560;
+            background: #111;
+            border-left: 1px solid var(--border);
+            padding: 72px 28px 40px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform .34s cubic-bezier(.4, 0, .2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mob-drawer.open {
+            transform: translateX(0)
+        }
+
+        .mob-nav {
+            list-style: none;
+            margin-bottom: 28px
+        }
+
+        .mob-nav li {
+            border-bottom: 1px solid var(--border)
+        }
+
+        .mob-nav li a {
+            display: block;
+            padding: 14px 0;
+            font-family: var(--font-display);
+            font-size: clamp(17px, 4.5vw, 21px);
+            font-weight: 800;
+            color: rgba(255, 255, 255, .6);
+            letter-spacing: -.015em;
+            transition: color .2s;
+        }
+
+        .mob-nav li a:hover {
+            color: #fff
+        }
+
+        .mob-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 28px;
+            border-top: 1px solid var(--border)
+        }
+
+        .mob-actions a {
+            display: block;
+            text-align: center;
+            padding: 13px;
+            border-radius: 2px;
+            font: 700 11px/1 var(--font-body);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .mob-sign {
+            border: 1px solid var(--border2);
+            color: var(--t1)
+        }
+
+        .mob-watch {
+            background: var(--red);
+            color: #fff
+        }
+
+        /* ══════════════════════════════════════════════════
+   HERO SLIDER
+══════════════════════════════════════════════════ */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100svh;
+            min-height: 540px;
+            max-height: 960px;
+            overflow: hidden;
+        }
+
+        /* Background slides */
+        .hslide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.4s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .hslide.active {
+            opacity: 1
+        }
+
+        .hslide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center 25%;
+            transform: scale(1.06);
+            transition: transform 9s ease;
+        }
+
+        .hslide.active .hslide-bg {
+            transform: scale(1)
+        }
+
+        .hslide-mask {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to top, rgba(15, 15, 15, 1) 0%, rgba(15, 15, 15, .55) 30%, rgba(0, 0, 0, .25) 60%, rgba(0, 0, 0, .55) 100%),
+                radial-gradient(ellipse at 50% 80%, rgba(0, 0, 0, .5) 0%, transparent 70%);
+        }
+
+        /* Red progress line */
+        .hslide-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--red);
+            z-index: 3;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 6.5s linear;
+        }
+
+        .hslide.active .hslide-progress {
+            transform: scaleX(1)
+        }
+
+        /* Top gradient for nav legibility */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 160px;
+            background: linear-gradient(to bottom, rgba(15, 15, 15, .92) 0%, transparent 100%);
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* Bottom gradient */
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 160px;
+            background: linear-gradient(to top, rgba(15, 15, 15, 1) 0%, transparent 100%);
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* ── CENTRED HERO TEXT BODY ── */
+        .hero-body {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px clamp(20px, 10vw, 160px) 120px;
+            pointer-events: none;
+        }
+
+        .hero-body>* {
+            pointer-events: auto
+        }
+
+        /* Text elements start hidden — JS adds .in class to trigger */
+        #hero-inner>* {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+
+        #hero-inner.in>*:nth-child(1) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .00s
+        }
+
+        #hero-inner.in>*:nth-child(2) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .14s
+        }
+
+        #hero-inner.in>*:nth-child(3) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .26s
+        }
+
+        #hero-inner.in>*:nth-child(4) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .38s
+        }
+
+        #hero-inner.in>*:nth-child(5) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .50s
+        }
+
+        .hero-platform-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .hpt-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--red);
+            flex-shrink: 0;
+        }
+
+        .hpt-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .7);
+        }
+
+        .hpt-divider {
+            width: 1px;
+            height: 12px;
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .hpt-rank {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--red);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 8vw, 104px);
+            font-weight: 900;
+            line-height: .94;
+            color: #fff;
+            letter-spacing: -.04em;
+            text-shadow: 0 8px 48px rgba(0, 0, 0, .9);
+            margin-bottom: 20px;
+            max-width: 900px;
+        }
+
+        .hero-title .accent {
+            color: var(--red)
+        }
+
+        .hero-chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .hero-desc {
+            font-size: clamp(13px, 1.4vw, 16px);
+            font-weight: 400;
+            line-height: 1.72;
+            color: rgba(255, 255, 255, .5);
+            max-width: 540px;
+            margin-bottom: 36px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        /* Slider controls */
+        .hero-dots-bar {
+            position: absolute;
+            bottom: clamp(32px, 5vw, 52px);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hdot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: none;
+            padding: 0;
+            background: rgba(255, 255, 255, .2);
+            cursor: pointer;
+            transition: all .3s;
+            flex-shrink: 0;
+        }
+
+        .hdot.active {
+            width: 26px;
+            border-radius: 4px;
+            background: var(--red)
+        }
+
+        .hero-nav {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 clamp(10px, 2vw, 28px);
+            pointer-events: none;
+        }
+
+        .harrow {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .55);
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: #fff;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all .22s;
+            backdrop-filter: blur(8px);
+        }
+
+        .harrow:hover {
+            background: var(--red);
+            border-color: var(--red)
+        }
+
+        .hero-counter {
+            position: absolute;
+            bottom: clamp(36px, 5vw, 56px);
+            right: var(--px);
+            z-index: 10;
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, .28);
+            letter-spacing: .06em;
+        }
+
+        .hero-counter span {
+            color: var(--red);
+            font-size: 18px;
+            font-weight: 900
+        }
+
+        /* ══════════════════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════════════════ */
+        .section {
+            padding: var(--sy) var(--px)
+        }
+
+        .section-alt {
+            background: var(--bg2)
+        }
+
+        .section-dark {
+            background: var(--bg3)
+        }
+
+        /* ══════════════════════════════════════════════════
+   TRENDING MOVIES
+══════════════════════════════════════════════════ */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        @media(min-width:500px) {
+            .movies-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media(min-width:750px) {
+            .movies-grid {
+                grid-template-columns: repeat(4, 1fr)
+            }
+        }
+
+        @media(min-width:1050px) {
+            .movies-grid {
+                grid-template-columns: repeat(6, 1fr)
+            }
+        }
+
+        .mc {
+            display: block;
+            position: relative;
+            border-radius: 2px;
+            overflow: hidden;
+            background: var(--bg3);
+            transition: transform .3s ease, box-shadow .3s;
+        }
+
+        .mc:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, .7), 0 0 0 1px var(--red-line)
+        }
+
+        .mc-poster {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background-size: cover;
+            background-position: center top;
+            transition: transform .4s ease, filter .3s;
+        }
+
+        .mc:hover .mc-poster {
+            transform: scale(1.05);
+            filter: brightness(1.08)
+        }
+
+        .mc-rank {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: var(--red);
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 900;
+            padding: 4px 8px;
+            line-height: 1;
+        }
+
+        .mc-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, .72);
+            color: rgba(255, 255, 255, .75);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            backdrop-filter: blur(6px);
+        }
+
+        .mc-hover {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15, 15, 15, .97) 0%, rgba(15, 15, 15, .25) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 12px 10px 14px;
+            opacity: 0;
+            transition: opacity .28s;
+        }
+
+        .mc:hover .mc-hover {
+            opacity: 1
+        }
+
+        .mc-title {
+            font-family: var(--font-display);
+            font-size: clamp(11px, 1vw, 13px);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .mc-sub {
+            font-size: 9.5px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .45);
+            letter-spacing: .04em;
+            margin-bottom: 10px;
+        }
+
+        .mc-play {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 1px;
+            font: 700 8.5px/1 var(--font-body);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            transition: background .2s;
+            align-self: flex-start;
+        }
+
+        .mc-play:hover {
+            background: var(--red-dark)
+        }
+
+        .mc-play svg {
+            width: 10px;
+            height: 10px
+        }
+
+        .mc-foot {
+            padding: 10px 10px 12px;
+            background: var(--bg3);
+        }
+
+        .mf-name {
+            font-family: var(--font-display);
+            font-size: clamp(11px, 1vw, 13px);
+            font-weight: 800;
+            color: var(--t1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+
+        .mf-info {
+            font-size: 9.5px;
+            font-weight: 600;
+            color: var(--t3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mf-score {
+            color: var(--red)
+        }
+
+        /* ══════════════════════════════════════════════════
+   FEATURED / NEW RELEASES
+══════════════════════════════════════════════════ */
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media(min-width:600px) {
+            .featured-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(min-width:900px) {
+            .featured-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+
+            .fc:first-child {
+                grid-row: 1/3
+            }
+        }
+
+        .fc {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            background: var(--bg3);
+            cursor: pointer;
+        }
+
+        .fc-img {
+            width: 100%;
+            padding-top: 56.25%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fc:first-child .fc-img {
+            padding-top: 56.25%;
+        }
+
+        @media(min-width:900px) {
+            .fc:first-child .fc-img {
+                padding-top: 0;
+                height: 100%;
+                min-height: 360px
+            }
+        }
+
+        .fc-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform .5s ease, filter .3s;
+        }
+
+        .fc:hover .fc-bg {
+            transform: scale(1.06);
+            filter: brightness(1.1)
+        }
+
+        .fc-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15, 15, 15, .95) 0%, rgba(15, 15, 15, .15) 55%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: clamp(14px, 2vw, 22px);
+        }
+
+        .fc-platform {
+            font-size: 8.5px;
+            font-weight: 800;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .fc-platform::before {
+            content: '';
+            width: 2px;
+            height: 10px;
+            background: var(--red);
+            border-radius: 1px
+        }
+
+        .fc-name {
+            font-family: var(--font-display);
+            font-size: clamp(15px, 2.2vw, 24px);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 5px;
+            letter-spacing: -.025em;
+        }
+
+        .fc:first-child .fc-name {
+            font-size: clamp(22px, 3vw, 34px)
+        }
+
+        .fc-meta {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .42);
+            letter-spacing: .04em
+        }
+
+        /* ══════════════════════════════════════════════════
+   PLATFORMS
+══════════════════════════════════════════════════ */
+        .plat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        @media(min-width:500px) {
+            .plat-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media(min-width:800px) {
+            .plat-grid {
+                grid-template-columns: repeat(5, 1fr)
+            }
+        }
+
+        .pc {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            padding: clamp(18px, 2.5vw, 26px) clamp(14px, 2vw, 20px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: all .25s;
+            cursor: pointer;
+        }
+
+        .pc::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .32s;
+        }
+
+        .pc:hover {
+            background: var(--bg4);
+            border-color: var(--red-line);
+            transform: translateY(-3px)
+        }
+
+        .pc:hover::after {
+            transform: scaleX(1)
+        }
+
+        .pc[data-p="netflix"]::after {
+            background: #E50914
+        }
+
+        .pc[data-p="disney"]::after {
+            background: #113CCF
+        }
+
+        .pc[data-p="amazon"]::after {
+            background: #00A8E0
+        }
+
+        .pc[data-p="max"]::after {
+            background: #7B32C8
+        }
+
+        .pc[data-p="mubi"]::after {
+            background: #A8BE1A
+        }
+
+        /* Small poster thumbnail inside card */
+        .pc-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-size: cover;
+            background-position: center;
+            border-radius: 1px;
+            margin-bottom: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pc-thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, .28);
+            transition: background .2s;
+        }
+
+        .pc:hover .pc-thumb::after {
+            background: rgba(0, 0, 0, .1)
+        }
+
+        .pc-name {
+            font-family: var(--font-display);
+            font-size: clamp(16px, 1.6vw, 20px);
+            font-weight: 900;
+            color: var(--t1);
+            margin-bottom: 3px;
+            letter-spacing: -.02em;
+        }
+
+        .pc-tag {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--t3);
+            margin-bottom: 10px
+        }
+
+        .pc-desc {
+            font-size: 11.5px;
+            line-height: 1.65;
+            color: rgba(255, 255, 255, .35);
+            flex: 1;
+            margin-bottom: 14px
+        }
+
+        .pc-stat {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--red);
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            letter-spacing: .04em;
+        }
+
+        /* ══════════════════════════════════════════════════
+   GENRE
+══════════════════════════════════════════════════ */
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        @media(min-width:500px) {
+            .genre-grid {
+                grid-template-columns: repeat(4, 1fr)
+            }
+        }
+
+        .gc {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: clamp(16px, 2.2vw, 24px) 18px;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gc-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: .12;
+            transition: opacity .3s;
+        }
+
+        .gc:hover .gc-bg {
+            opacity: .22
+        }
+
+        .gc:hover {
+            background: var(--bg4);
+            border-color: var(--red-line);
+            transform: translateX(4px)
+        }
+
+        .gc:hover .gc-arrow {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--red)
+        }
+
+        .gc:hover .gc-name {
+            color: #fff
+        }
+
+        .gc-content {
+            position: relative;
+            z-index: 1
+        }
+
+        .gc-name {
+            font-family: var(--font-display);
+            font-size: clamp(14px, 1.5vw, 19px);
+            font-weight: 800;
+            color: rgba(255, 255, 255, .68);
+            transition: color .2s;
+            letter-spacing: -.01em;
+        }
+
+        .gc-count {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--t4);
+            margin-top: 3px
+        }
+
+        .gc-arrow {
+            font-size: 18px;
+            color: var(--t4);
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: all .2s;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        /* ══════════════════════════════════════════════════
+   NEWSLETTER
+══════════════════════════════════════════════════ */
+        .nl {
+            background: linear-gradient(120deg, #1A0000 0%, #161616 55%, #0F0F0F 100%);
+            border-top: 1px solid var(--red-line);
+            border-bottom: 1px solid var(--red-line);
+            padding: var(--sy) var(--px);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media(min-width:700px) {
+            .nl {
+                grid-template-columns: 1fr 1fr;
+                gap: 60px
+            }
+        }
+
+        .nl-pre {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 12px;
+        }
+
+        .nl-pre::before {
+            content: '';
+            width: 3px;
+            height: 16px;
+            background: var(--red);
+            border-radius: 1px;
+            flex-shrink: 0
+        }
+
+        .nl-title {
+            font-family: var(--font-display);
+            font-size: clamp(26px, 4vw, 44px);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.05;
+            letter-spacing: -.03em;
+            margin-bottom: 12px;
+        }
+
+        .nl-title span {
+            color: var(--red)
+        }
+
+        .nl-desc {
+            font-size: 13px;
+            line-height: 1.74;
+            color: rgba(255, 255, 255, .38)
+        }
+
+        .nl-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .nl-row {
+            display: flex
+        }
+
+        .nl-input {
+            flex: 1;
+            min-width: 0;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid var(--border2);
+            border-right: none;
+            border-radius: 2px 0 0 2px;
+            color: #fff;
+            padding: 13px 16px;
+            font: 400 13px/1 var(--font-body);
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        .nl-input::placeholder {
+            color: var(--t3)
+        }
+
+        .nl-input:focus {
+            border-color: var(--red)
+        }
+
+        .nl-btn {
+            background: var(--red);
+            border: none;
+            color: #fff;
+            padding: 13px 24px;
+            border-radius: 0 2px 2px 0;
+            font: 700 10.5px/1 var(--font-body);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            transition: background .2s;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .nl-btn:hover {
+            background: var(--red-dark)
+        }
+
+        .nl-note {
+            font-size: 10px;
+            color: var(--t4);
+            line-height: 1.65
+        }
+
+        /* ══════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════ */
+        footer {
+            background: #080808;
+            border-top: 1px solid var(--border);
+            padding: clamp(44px, 6vw, 72px) var(--px) clamp(24px, 3.5vw, 40px);
+        }
+
+        .ft-top {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            padding-bottom: clamp(32px, 5vw, 52px);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: clamp(24px, 3.5vw, 40px);
+        }
+
+        @media(min-width:480px) {
+            .ft-top {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(min-width:900px) {
+            .ft-top {
+                grid-template-columns: 1.8fr 1fr 1fr 1fr
+            }
+        }
+
+        .ft-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .ft-bar {
+            width: 4px;
+            height: 30px;
+            background: var(--red);
+            border-radius: 1px;
+            flex-shrink: 0
+        }
+
+        .ft-brand-text {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -.03em;
+        }
+
+        .ft-brand-text em {
+            font-style: normal;
+            color: var(--red)
+        }
+
+        .ft-desc {
+            font-size: 11.5px;
+            line-height: 1.74;
+            color: rgba(255, 255, 255, .26);
+            max-width: 270px
+        }
+
+        .ft-col-title {
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .24em;
+            text-transform: uppercase;
+            color: var(--red);
+            padding-bottom: 9px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ft-links {
+            list-style: none
+        }
+
+        .ft-links li {
+            margin-bottom: 9px
+        }
+
+        .ft-links a {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, .32);
+            transition: color .2s
+        }
+
+        .ft-links a:hover {
+            color: #fff
+        }
+
+        .ft-bot {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--t3);
+        }
+
+        .ft-legal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px
+        }
+
+        .ft-legal a {
+            color: var(--t3);
+            transition: color .2s
+        }
+
+        .ft-legal a:hover {
+            color: #fff
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ════════════════ HAMBURGER ════════════════════ -->
+    <button class="ham" id="ham" aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <!-- ════════════════ MOBILE OVERLAY ═════════════ -->
+    <div class="mob-overlay" id="mobOverlay"></div>
+
+    <!-- ════════════════ MOBILE DRAWER ═════════════ -->
+    <div class="mob-drawer" id="mobDrawer">
+        <ul class="mob-nav">
+            <li><a href="#trending">Trending</a></li>
+            <li><a href="#platforms">Platforms</a></li>
+            <li><a href="#featured">New Releases</a></li>
+            <li><a href="#genres">Genres</a></li>
+            <li><a href="#editorial">Editorial</a></li>
+            <li><a href="#">My Watchlist</a></li>
+        </ul>
+        <div class="mob-actions">
+            <a href="#" class="mob-sign">Sign In</a>
+            <a href="#" class="mob-watch">Watch Free</a>
+        </div>
+    </div>
+
+    <!-- ════════════════ NAV ═════════════════════════ -->
+    <nav class="nav" id="mainNav">
+        <a class="nav-logo" href="#">
+            <div class="nav-logo-bar"></div>
+            <div>
+                <div class="nav-logo-text">Cinema<em>Haus</em></div>
+                <div class="nav-logo-tagline">Global Streaming Index</div>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+
+            <!-- PLATFORMS mega menu with pictures -->
+            <li>
+                <a href="#platforms" class="active">
+                    Platforms
+                    <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M1 1l4 4 4-4" />
+                    </svg>
+                </a>
+                <div class="mega mega-wide">
+                    <div class="mega-platforms-grid">
+                        <a class="mega-plat-cell" href="#">
+                            <div class="mega-plat-thumb"
+                                style="background-image:url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&q=70&auto=format&fit=crop')">
+                            </div>
+                            <div class="mega-plat-name">Netflix</div>
+                            <div class="mega-plat-count">270M+ subscribers</div>
+                        </a>
+                        <a class="mega-plat-cell" href="#">
+                            <div class="mega-plat-thumb"
+                                style="background-image:url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&q=70&auto=format&fit=crop')">
+                            </div>
+                            <div class="mega-plat-name">Disney+</div>
+                            <div class="mega-plat-count">150M+ subscribers</div>
+                        </a>
+                        <a class="mega-plat-cell" href="#">
+                            <div class="mega-plat-thumb"
+                                style="background-image:url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=300&q=70&auto=format&fit=crop')">
+                            </div>
+                            <div class="mega-plat-name">Prime Video</div>
+                            <div class="mega-plat-count">200M+ members</div>
+                        </a>
+                        <a class="mega-plat-cell" href="#">
+                            <div class="mega-plat-thumb"
+                                style="background-image:url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&q=70&auto=format&fit=crop')">
+                            </div>
+                            <div class="mega-plat-name">Max</div>
+                            <div class="mega-plat-count">95M+ subscribers</div>
+                        </a>
+                        <a class="mega-plat-cell" href="#">
+                            <div class="mega-plat-thumb"
+                                style="background-image:url('https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=300&q=70&auto=format&fit=crop')">
+                            </div>
+                            <div class="mega-plat-name">MUBI</div>
+                            <div class="mega-plat-count">12M+ members</div>
+                        </a>
+                    </div>
+                    <div class="mega-footer">
+                        <span class="mega-footer-text">5 platforms · 50,000+ titles indexed</span>
+                        <a href="#">Compare All Platforms &rarr;</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- FILMS mega menu with featured image -->
+            <li>
+                <a href="#trending">
+                    Films
+                    <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M1 1l4 4 4-4" />
+                    </svg>
+                </a>
+                <div class="mega">
+                    <div class="mega-inner">
+                        <!-- Featured poster -->
+                        <div class="mega-feature">
+                            <div class="mega-feature-img"
+                                style="background-image:url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&q=75&auto=format&fit=crop')">
+                            </div>
+                            <div class="mega-feature-overlay">
+                                <div class="mega-feature-tag">Editor's Pick</div>
+                                <div class="mega-feature-title">Oppenheimer</div>
+                                <div class="mega-feature-sub">Nolan · 2023 · Thriller</div>
+                            </div>
+                        </div>
+                        <!-- Col 1 -->
+                        <div class="mega-col">
+                            <div class="mega-col-title">Browse Genre</div>
+                            <ul class="mega-links">
+                                <li><a href="#">Drama <span class="ml-meta">12.4K</span></a></li>
+                                <li><a href="#">Action <span class="ml-meta">9.3K</span></a></li>
+                                <li><a href="#">Thriller <span class="ml-meta">7.1K</span></a></li>
+                                <li><a href="#">Sci-Fi <span class="ml-meta">5.2K</span></a></li>
+                                <li><a href="#">Documentary <span class="ml-meta">8.3K</span></a></li>
+                                <li><a href="#">Horror <span class="ml-meta">4.9K</span></a></li>
+                            </ul>
+                        </div>
+                        <!-- Col 2 -->
+                        <div class="mega-col">
+                            <div class="mega-col-title">Collections</div>
+                            <ul class="mega-links">
+                                <li><a href="#">Cannes Palme d'Or</a></li>
+                                <li><a href="#">Academy Award Winners</a></li>
+                                <li><a href="#">BAFTA Selection</a></li>
+                                <li><a href="#">Independent Cinema</a></li>
+                                <li><a href="#">International Cinema</a></li>
+                                <li><a href="#">Silent Era Classics</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega-footer">
+                        <span class="mega-footer-text">50,000+ titles across all platforms</span>
+                        <a href="#">Browse Full Index &rarr;</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- TRENDING mega with images -->
+            <li>
+                <a href="#trending">
+                    Trending
+                    <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M1 1l4 4 4-4" />
+                    </svg>
+                </a>
+                <div class="mega">
+                    <div class="mega-inner">
+                        <div class="mega-feature">
+                            <div class="mega-feature-img"
+                                style="background-image:url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=75&auto=format&fit=crop')">
+                            </div>
+                            <div class="mega-feature-overlay">
+                                <div class="mega-feature-tag">No. 1 This Week</div>
+                                <div class="mega-feature-title">Dune: Part Two</div>
+                                <div class="mega-feature-sub">Villeneuve · 2024 · Sci-Fi</div>
+                            </div>
+                        </div>
+                        <div class="mega-col">
+                            <div class="mega-col-title">This Week</div>
+                            <ul class="mega-links">
+                                <li><a href="#">Dune: Part Two <span class="ml-meta">1</span></a></li>
+                                <li><a href="#">Civil War <span class="ml-meta">2</span></a></li>
+                                <li><a href="#">Past Lives <span class="ml-meta">3</span></a></li>
+                                <li><a href="#">Anatomy of a Fall <span class="ml-meta">4</span></a></li>
+                                <li><a href="#">Zone of Interest <span class="ml-meta">5</span></a></li>
+                                <li><a href="#">Poor Things <span class="ml-meta">6</span></a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-col">
+                            <div class="mega-col-title">Awards Season</div>
+                            <ul class="mega-links">
+                                <li><a href="#">Oscar Nominees 2025</a></li>
+                                <li><a href="#">BAFTA Winners</a></li>
+                                <li><a href="#">Cannes 2024</a></li>
+                                <li><a href="#">Golden Globe Picks</a></li>
+                                <li><a href="#">Critics Circle</a></li>
+                                <li><a href="#">Sundance Selections</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega-footer">
+                        <span class="mega-footer-text">Updated daily from all five platforms</span>
+                        <a href="#">Full Trending Index &rarr;</a>
+                    </div>
+                </div>
+            </li>
+
+            <li><a href="#editorial">Editorial</a></li>
+            <li><a href="#">Rankings</a></li>
+            <li><a href="#">Awards</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="nav-search-wrap">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <circle cx="9" cy="9" r="6" />
+                    <path d="M15 15l3 3" />
+                </svg>
+                <input type="text" class="nav-search" placeholder="Search titles...">
+            </div>
+            <button class="nav-btn-in">Sign In</button>
+            <button class="nav-btn-watch">Watch Free</button>
+        </div>
+    </nav>
+
+    <!-- ════════════════ HERO SLIDER ═════════════════ -->
+    <section class="hero">
+
+        <div class="hslide active">
+            <div class="hslide-bg"
+                style="background-image:url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1800&q=85&auto=format&fit=crop')">
+            </div>
+            <div class="hslide-mask"></div>
+            <div class="hslide-progress"></div>
+        </div>
+        <div class="hslide">
+            <div class="hslide-bg"
+                style="background-image:url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1800&q=85&auto=format&fit=crop')">
+            </div>
+            <div class="hslide-mask"></div>
+            <div class="hslide-progress"></div>
+        </div>
+        <div class="hslide">
+            <div class="hslide-bg"
+                style="background-image:url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1800&q=85&auto=format&fit=crop')">
+            </div>
+            <div class="hslide-mask"></div>
+            <div class="hslide-progress"></div>
+        </div>
+        <div class="hslide">
+            <div class="hslide-bg"
+                style="background-image:url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=1800&q=85&auto=format&fit=crop')">
+            </div>
+            <div class="hslide-mask"></div>
+            <div class="hslide-progress"></div>
+        </div>
+        <div class="hslide">
+            <div class="hslide-bg"
+                style="background-image:url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1800&q=85&auto=format&fit=crop')">
+            </div>
+            <div class="hslide-mask"></div>
+            <div class="hslide-progress"></div>
+        </div>
+
+        <!-- CENTRED TEXT — always visible, JS controls .in class for animation -->
+        <div class="hero-body">
+            <div id="hero-inner">
+                <div class="hero-platform-tag" id="hPlatTag">
+                    <span class="hpt-dot"></span>
+                    <span class="hpt-label" id="hPlatLabel">Netflix Original</span>
+                    <span class="hpt-divider"></span>
+                    <span class="hpt-rank" id="hRank">No. 1 This Week</span>
+                </div>
+                <h1 class="hero-title" id="hTitle">The <span class="accent">Last</span> Picture</h1>
+                <div class="hero-chips" id="hChips">
+                    <span class="pill">Drama</span>
+                    <span class="pill">2024</span>
+                    <span class="pill">2h 28m</span>
+                    <span class="pill pill-red">9.1 / 10</span>
+                </div>
+                <p class="hero-desc" id="hDesc">A sweeping cinematic experience that redefines modern storytelling.
+                    Gripping, visually stunning, and utterly unforgettable. Nominated for seven Academy Awards.</p>
+                <div class="hero-actions">
+                    <a href="#" class="btn-primary">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        Watch Now
+                    </a>
+                    <a href="#" class="btn-secondary">More Information</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arrows -->
+        <div class="hero-nav">
+            <button class="harrow" onclick="shift(-1)" aria-label="Previous slide">&#8592;</button>
+            <button class="harrow" onclick="shift(1)" aria-label="Next slide">&#8594;</button>
+        </div>
+
+        <!-- Dots -->
+        <div class="hero-dots-bar" id="hDots">
+            <button class="hdot active" onclick="goTo(0)"></button>
+            <button class="hdot" onclick="goTo(1)"></button>
+            <button class="hdot" onclick="goTo(2)"></button>
+            <button class="hdot" onclick="goTo(3)"></button>
+            <button class="hdot" onclick="goTo(4)"></button>
+        </div>
+
+        <!-- Counter -->
+        <div class="hero-counter"><span id="hCur">01</span>&nbsp;/&nbsp;05</div>
+    </section>
+
+    <!-- ════════════════ TRENDING ════════════════════ -->
+    <section class="section" id="trending">
+        <div class="sec-hd">
+            <div>
+                <h2 class="display-heading">Top Trending Movies</h2>
+            </div>
+            <a href="#" class="link-arrow">View All</a>
+        </div>
+
+        <div class="movies-grid">
+
+            <a class="mc" href="#">
+                <div class="mc-poster"
+                    style="background-image:url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&q=75&auto=format&fit=crop')">
+                </div>
+                <div class="mc-rank">01</div>
+                <div class="mc-badge">Netflix</div>
+                <div class="mc-hover">
+                    <div class="mc-title">Oppenheimer</div>
+                    <div class="mc-sub">Nolan &middot; 2023 &middot; 3h</div>
+                    <button class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>Play</button>
+                </div>
+                <div class="mc-foot">
+                    <div class="mf-name">Oppenheimer</div>
+                    <div class="mf-info"><span class="mf-score">8.9</span>&middot; 2023 &middot; Thriller</div>
+                </div>
+            </a>
+
+            <a class="mc" href="#">
+                <div class="mc-poster"
+                    style="background-image:url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=75&auto=format&fit=crop')">
+                </div>
+                <div class="mc-rank">02</div>
+                <div class="mc-badge">Disney+</div>
+                <div class="mc-hover">
+                    <div class="mc-title">Guardians Vol. 3</div>
+                    <div class="mc-sub">Gunn &middot; 2023 &middot; 2h 30m</div>
+                    <button class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>Play</button>
+                </div>
+                <div class="mc-foot">
+                    <div class="mf-name">Guardians Vol. 3</div>
+                    <div class="mf-info"><span class="mf-score">7.9</span>&middot; 2023 &middot; Action</div>
+                </div>
+            </a>
+
+            <a class="mc" href="#">
+                <div class="mc-poster"
+                    style="background-image:url('https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&q=75&auto=format&fit=crop')">
+                </div>
+                <div class="mc-rank">03</div>
+                <div class="mc-badge">Max</div>
+                <div class="mc-hover">
+                    <div class="mc-title">Dune: Part Two</div>
+                    <div class="mc-sub">Villeneuve &middot; 2024 &middot; 2h 46m</div>
+                    <button class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>Play</button>
+                </div>
+                <div class="mc-foot">
+                    <div class="mf-name">Dune: Part Two</div>
+                    <div class="mf-info"><span class="mf-score">8.6</span>&middot; 2024 &middot; Sci-Fi</div>
+                </div>
+            </a>
+
+            <a class="mc" href="#">
+                <div class="mc-poster"
+                    style="background-image:url('https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400&q=75&auto=format&fit=crop')">
+                </div>
+                <div class="mc-rank">04</div>
+                <div class="mc-badge">Prime</div>
+                <div class="mc-hover">
+                    <div class="mc-title">Past Lives</div>
+                    <div class="mc-sub">Song &middot; 2023 &middot; 1h 46m</div>
+                    <button class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>Play</button>
+                </div>
+                <div class="mc-foot">
+                    <div class="mf-name">Past Lives</div>
+                    <div class="mf-info"><span class="mf-score">8.0</span>&middot; 2023 &middot; Romance</div>
+                </div>
+            </a>
+
+            <a class="mc" href="#">
+                <div class="mc-poster"
+                    style="background-image:url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=75&auto=format&fit=crop')">
+                </div>
+                <div class="mc-rank">05</div>
+                <div class="mc-badge">MUBI</div>
+                <div class="mc-hover">
+                    <div class="mc-title">Anatomy of a Fall</div>
+                    <div class="mc-sub">Triet &middot; 2023 &middot; 2h 32m</div>
+                    <button class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>Play</button>
+                </div>
+                <div class="mc-foot">
+                    <div class="mf-name">Anatomy of a Fall</div>
+                    <div class="mf-info"><span class="mf-score">7.8</span>&middot; 2023 &middot; Thriller</div>
+                </div>
+            </a>
+
+            <a class="mc" href="#">
+                <div class="mc-poster"
+                    style="background-image:url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=400&q=75&auto=format&fit=crop')">
+                </div>
+                <div class="mc-rank">06</div>
+                <div class="mc-badge">Netflix</div>
+                <div class="mc-hover">
+                    <div class="mc-title">Zone of Interest</div>
+                    <div class="mc-sub">Glazer &middot; 2024 &middot; 1h 45m</div>
+                    <button class="mc-play"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>Play</button>
+                </div>
+                <div class="mc-foot">
+                    <div class="mf-name">Zone of Interest</div>
+                    <div class="mf-info"><span class="mf-score">7.4</span>&middot; 2024 &middot; Drama</div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ════════════════ NEW RELEASES ════════════════ -->
+    <section class="section section-alt" id="featured">
+        <div class="sec-hd">
+            <div>
+                <h2 class="display-heading">New in Cinemas &amp; Streaming</h2>
+            </div>
+            <a href="#" class="link-arrow">Browse All</a>
+        </div>
+
+        <div class="featured-grid">
+            <a class="fc" href="#">
+                <div class="fc-img">
+                    <div class="fc-bg"
+                        style="background-image:url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=900&q=80&auto=format&fit=crop')">
+                    </div>
+                    <div class="fc-overlay">
+                        <div class="fc-platform">Netflix Original</div>
+                        <div class="fc-name">The Irishman — Extended Remaster</div>
+                        <div class="fc-meta">Scorsese &middot; 2024 Remaster &middot; 8.2</div>
+                    </div>
+                </div>
+            </a>
+            <a class="fc" href="#">
+                <div class="fc-img">
+                    <div class="fc-bg"
+                        style="background-image:url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600&q=80&auto=format&fit=crop')">
+                    </div>
+                    <div class="fc-overlay">
+                        <div class="fc-platform">Max &middot; HBO</div>
+                        <div class="fc-name">The Sympathizer</div>
+                        <div class="fc-meta">Park &middot; 2024 &middot; 9.3</div>
+                    </div>
+                </div>
+            </a>
+            <a class="fc" href="#">
+                <div class="fc-img">
+                    <div class="fc-bg"
+                        style="background-image:url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&q=80&auto=format&fit=crop')">
+                    </div>
+                    <div class="fc-overlay">
+                        <div class="fc-platform">Amazon Prime</div>
+                        <div class="fc-name">Civil War</div>
+                        <div class="fc-meta">Garland &middot; 2024 &middot; 7.3</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ════════════════ PLATFORMS ═══════════════════ -->
+    <section class="section" id="platforms">
+        <div class="sec-hd">
+            <div>
+                <h2 class="display-heading">Top Streaming Platforms</h2>
+            </div>
+            <a href="#" class="link-arrow">Compare All</a>
+        </div>
+
+        <div class="plat-grid">
+            <div class="pc" data-p="netflix">
+                <div class="pc-thumb"
+                    style="background-image:url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=70&auto=format&fit=crop')">
+                </div>
+                <div class="pc-name">Netflix</div>
+                <div class="pc-tag">Global Originals</div>
+                <p class="pc-desc">The world's leading streaming service. Original films, documentaries, and licensed
+                    content in 190 countries.</p>
+                <div class="pc-stat">270M+ Subscribers</div>
+            </div>
+            <div class="pc" data-p="disney">
+                <div class="pc-thumb"
+                    style="background-image:url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=70&auto=format&fit=crop')">
+                </div>
+                <div class="pc-name">Disney+</div>
+                <div class="pc-tag">Franchise Universe</div>
+                <p class="pc-desc">Disney, Marvel, Star Wars, Pixar — home of beloved franchises and iconic characters.
+                </p>
+                <div class="pc-stat">150M+ Subscribers</div>
+            </div>
+            <div class="pc" data-p="amazon">
+                <div class="pc-thumb"
+                    style="background-image:url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=400&q=70&auto=format&fit=crop')">
+                </div>
+                <div class="pc-name">Prime Video</div>
+                <div class="pc-tag">Amazon</div>
+                <p class="pc-desc">Vast selection of regional and international titles. Award-winning Amazon Originals.
+                </p>
+                <div class="pc-stat">200M+ Members</div>
+            </div>
+            <div class="pc" data-p="max">
+                <div class="pc-thumb"
+                    style="background-image:url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&q=70&auto=format&fit=crop')">
+                </div>
+                <div class="pc-name">Max</div>
+                <div class="pc-tag">HBO &amp; Warner Bros.</div>
+                <p class="pc-desc">Premium cinema from HBO and Warner Bros. Prestige television and blockbuster films.
+                </p>
+                <div class="pc-stat">95M+ Subscribers</div>
+            </div>
+            <div class="pc" data-p="mubi">
+                <div class="pc-thumb"
+                    style="background-image:url('https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&q=70&auto=format&fit=crop')">
+                </div>
+                <div class="pc-name">MUBI</div>
+                <div class="pc-tag">Curated Cinema</div>
+                <p class="pc-desc">Daily curated indie, classic and cult films. A film of the day, every day, for the
+                    discerning viewer.</p>
+                <div class="pc-stat">12M+ Members</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════ GENRES ══════════════════════ -->
+    <section class="section section-dark" id="genres">
+        <div class="sec-hd">
+            <div>
+                <h2 class="display-heading">Genre Index</h2>
+            </div>
+            <a href="#" class="link-arrow">All Genres</a>
+        </div>
+
+        <div class="genre-grid">
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">Drama</div>
+                    <div class="gc-count">12,480 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">Action</div>
+                    <div class="gc-count">9,340 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">Thriller</div>
+                    <div class="gc-count">7,140 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">Sci-Fi</div>
+                    <div class="gc-count">5,290 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">Documentary</div>
+                    <div class="gc-count">8,320 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">Horror</div>
+                    <div class="gc-count">4,920 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">International</div>
+                    <div class="gc-count">9,750 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+            <a class="gc" href="#">
+                <div class="gc-bg"
+                    style="background-image:url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&q=60&auto=format&fit=crop')">
+                </div>
+                <div class="gc-content">
+                    <div class="gc-name">Classics</div>
+                    <div class="gc-count">4,180 titles</div>
+                </div>
+                <span class="gc-arrow">&#8594;</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ════════════════ NEWSLETTER ══════════════════ -->
+    <div class="nl">
+        <div>
+            <h2 class="nl-title">Never Miss a <span>Great Film</span></h2>
+            <p class="nl-desc">The week's best new releases, trending titles, and platform news — delivered every
+                Thursday. No promotional content, just great cinema.</p>
+        </div>
+        <div>
+            <div class="nl-form">
+                <div class="nl-row">
+                    <input type="email" class="nl-input" placeholder="Enter your email address">
+                    <button class="nl-btn">Subscribe</button>
+                </div>
+                <p class="nl-note">Free to subscribe. Unsubscribe at any time. Data protected under GDPR &amp; POPIA.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════ FOOTER ══════════════════════ -->
+    <footer>
+        <div class="ft-top">
+            <div>
+                <div class="ft-brand">
+                    <div class="ft-bar"></div>
+                    <div class="ft-brand-text">Cinema<em>Haus</em></div>
+                </div>
+                <p class="ft-desc">An independent global streaming index. Discover, compare and watch the world's best
+                    movies across Netflix, Disney+, Max, Amazon Prime, and MUBI.</p>
+            </div>
+            <div>
+                <div class="ft-col-title">Platforms</div>
+                <ul class="ft-links">
+                    <li><a href="#">Netflix</a></li>
+                    <li><a href="#">Disney+</a></li>
+                    <li><a href="#">Amazon Prime Video</a></li>
+                    <li><a href="#">Max</a></li>
+                    <li><a href="#">MUBI</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="ft-col-title">Discover</div>
+                <ul class="ft-links">
+                    <li><a href="#">Trending Now</a></li>
+                    <li><a href="#">New Releases</a></li>
+                    <li><a href="#">Top Rated</a></li>
+                    <li><a href="#">Genre Index</a></li>
+                    <li><a href="#">Awards Season</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="ft-col-title">Company</div>
+                <ul class="ft-links">
+                    <li><a href="#">About CinemaHaus</a></li>
+                    <li><a href="#">Press Room</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">API Access</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="ft-bot">
+            <span>&copy; 2025 CinemaHaus Ltd. All rights reserved.</span>
+            <div class="ft-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">GDPR</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ══ SLIDER DATA ════════════════════════════════════ */
+        const SD = [
+            {
+                platform: 'Netflix Original', rank: 'No. 1 This Week',
+                title: 'The <span class="accent">Last</span> Picture ',
+                chips: ['Drama', '2024', '2h 28m'], score: '9.1',
+                desc: 'A sweeping cinematic experience that redefines modern storytelling. Gripping, visually stunning, and utterly unforgettable. Nominated for seven Academy Awards.'
+            },
+            {
+                platform: 'Disney+ Marvel Studios', rank: 'No. 2 Trending',
+                title: '<span class="accent">Avengers:</span>  Wars',
+                chips: ['Action', '2025', '2h 55m'], score: '8.7',
+                desc: 'The most anticipated Marvel event in a decade. Heroes and villains collide in an epic multiverse showdown that redefines the boundaries of blockbuster cinema.'
+            },
+            {
+                platform: 'Max — HBO Films', rank: 'Critics Award',
+                title: '<span class="accent">Night</span> Falls',
+                chips: ['Prestige Drama', '2024', '1h 58m'], score: '9.4',
+                desc: 'An HBO masterwork of extraordinary quiet power. A deeply human story of loss, memory, and redemption told with the restraint that defines prestige cinema.'
+            },
+            {
+                platform: 'Amazon Prime Video', rank: 'Critics Pick',
+                title: '<span class="accent">Empire</span> of Silence',
+                chips: ['Thriller', '2024', '2h 12m'], score: '8.3',
+                desc: 'A relentless political thriller. Stunning performances, razor-sharp writing, and a finale that will leave you breathless. The standout film of the year.'
+            },
+            {
+                platform: 'MUBI — Curated Cinema', rank: 'Palme d\'Or 2024',
+                title: 'Blue <span class="accent">Hour</span>',
+                chips: ['Independent', '2023', '1h 47m'], score: '9.0',
+                desc: 'A poetic meditation on identity, solitude, and belonging. Awarded the Palme d\'Or at Cannes. MUBI\'s definitive film of the year and a modern masterpiece.'
+            }
+        ];
+
+        let cur = 0, tmr;
+        const inner = document.getElementById('hero-inner');
+
+        function animateIn() {
+            inner.classList.remove('in');
+            void inner.offsetWidth; // force reflow
+            inner.classList.add('in');
+        }
+
+        function updateContent(i) {
+            const d = SD[i];
+            document.getElementById('hPlatLabel').textContent = d.platform;
+            document.getElementById('hRank').textContent = d.rank;
+            document.getElementById('hTitle').innerHTML = d.title;
+            document.getElementById('hDesc').textContent = d.desc;
+            document.getElementById('hChips').innerHTML =
+                d.chips.map(c => `<span class="pill">${c}</span>`).join('') +
+                `<span class="pill pill-red">${d.score} / 10</span>`;
+        }
+
+        function setSlide(i) {
+            document.querySelectorAll('.hslide').forEach((s, j) => s.classList.toggle('active', j === i));
+            document.querySelectorAll('.hdot').forEach((d, j) => d.classList.toggle('active', j === i));
+            document.getElementById('hCur').textContent = String(i + 1).padStart(2, '0');
+
+            // Animate out then update then animate in
+            inner.classList.remove('in');
+            void inner.offsetWidth;
+            updateContent(i);
+            requestAnimationFrame(() => requestAnimationFrame(() => inner.classList.add('in')));
+
+            cur = i;
+        }
+
+        function goTo(i) { clearInterval(tmr); setSlide(i); startAuto(); }
+        function shift(d) { goTo((cur + d + SD.length) % SD.length); }
+        function startAuto() { tmr = setInterval(() => setSlide((cur + 1) % SD.length), 6500); }
+
+        /* Init — populate first slide and animate in on load */
+        document.addEventListener('DOMContentLoaded', () => {
+            updateContent(0);
+            requestAnimationFrame(() => requestAnimationFrame(() => inner.classList.add('in')));
+            startAuto();
+        });
+
+        /* Touch swipe */
+        let tx = 0;
+        const heroEl = document.querySelector('.hero');
+        heroEl.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+        heroEl.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].clientX - tx;
+            if (Math.abs(dx) > 50) shift(dx < 0 ? 1 : -1);
+        });
+
+        /* ══ HAMBURGER ═════════════════════════════════════ */
+        const ham = document.getElementById('ham');
+        const drawer = document.getElementById('mobDrawer');
+        const overlay = document.getElementById('mobOverlay');
+
+        function closeMob() {
+            ham.classList.remove('open');
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        ham.addEventListener('click', () => {
+            const opening = !drawer.classList.contains('open');
+            drawer.classList.toggle('open', opening);
+            overlay.classList.toggle('open', opening);
+            ham.classList.toggle('open', opening);
+            document.body.style.overflow = opening ? 'hidden' : '';
+        });
+
+        overlay.addEventListener('click', closeMob);
+        drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMob));
+
+        /* ══ NAV SCROLL ════════════════════════════════════ */
+        const nav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('solid', window.scrollY > 80);
+        }, { passive: true });
+
+        /* ══ ACTIVE NAV LINK ═══════════════════════════════ */
+        document.querySelectorAll('.nav-links > li > a').forEach(a => {
+            a.addEventListener('click', function () {
+                document.querySelectorAll('.nav-links > li > a').forEach(x => x.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        /* Show/hide ham based on viewport */
+        function checkHam() {
+            ham.style.display = window.innerWidth < 900 ? 'flex' : 'none';
+        }
+        checkHam();
+        window.addEventListener('resize', checkHam);
+    </script>
+</body>
+
+</html>
